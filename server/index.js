@@ -42,9 +42,7 @@ async function run() {
     // change status
     app.patch("/status", async (req, res) => {
       const id = req.query.id;
-      console.log(id);
       const data = req.body;
-      console.log(req.body);
       const query = { _id: new ObjectId(id) };
       const updatedDoc = {
         $set: {
@@ -54,11 +52,44 @@ async function run() {
       const result = await taskCollection.updateOne(query, updatedDoc);
       res.send(result);
     });
-    // app.post("/tasks", async (req, res) => {
-    //   const data = req.body;
-    //   const result = await taskCollection.insertMany(data);
-    //   res.send(result);
-    // });
+    // delete task
+    app.delete("/delete", async (req, res) => {
+      const id = req.query.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = taskCollection.deleteOne(filter);
+      res.send(result);
+    });
+
+    // get single data
+    app.get("/task", async (req, res) => {
+      const id = req.query.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = taskCollection.findOne(filter);
+      res.send(result);
+    });
+    // update task
+    app.put("/update", async (req, res) => {
+      const id = req.query.id;
+      const filter = { _id: new ObjectId(id) };
+      const data = req.body;
+      const updatedDoc = {
+        $set: {
+          title: data.title,
+          description: data.description,
+          priority: data.priority,
+          deadline: data.deadline,
+          email: data.email,
+        },
+      };
+      const result = await taskCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+    // create task
+    app.post("/tasks", async (req, res) => {
+      const data = req.body;
+      const result = await taskCollection.insertOne(data);
+      res.send(result);
+    });
     // handle logout
     app.post("/logout", async (req, res) => {
       res
