@@ -44,9 +44,6 @@ const Home = () => {
       setCompleted([...filteredCompleted]);
     }
   }, [data]);
-  console.log(todo);
-  console.log(progress);
-  console.log(completed);
 
   // const onDragEnd = (result) => {
   //   const { destination, source } = result;
@@ -124,9 +121,9 @@ const Home = () => {
         </div> */}
 
       <div className="flex justify-center gap-10 px-8 mt-10">
-        <TaskColumn title={"Todo"} task={todo} />
-        <TaskColumn title={"IN-PROGRESS"} task={progress} />
-        <TaskColumn title={"Completed"} task={completed} />
+        <TaskColumn title={"Todo"} task={todo} refetch={refetch} />
+        <TaskColumn title={"IN-PROGRESS"} task={progress} refetch={refetch} />
+        <TaskColumn title={"Completed"} task={completed} refetch={refetch} />
         {/* {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
