@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import TaskColumn from "./TaskColumn";
 import CreateTaskModal from "./Modals/CreateTaskModal";
+import useAuth from "../../Hooks/useAuth";
 
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   const newTaskIds = Array.from(sourceCol.taskIds);
@@ -23,11 +24,12 @@ const Home = () => {
   const [todo, setTodo] = useState([]);
   const [progress, setProgress] = useState([]);
   const [completed, setCompleted] = useState([]);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { data, refetch } = useQuery({
     queryKey: ["all-task"],
     queryFn: async () => {
-      const res = await axiosSecure("/tasks");
+      const res = await axiosSecure(`/tasks?email=${user?.email}`);
       return res.data;
     },
   });
