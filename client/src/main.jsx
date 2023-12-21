@@ -6,9 +6,7 @@ import router from "./Router/router";
 import { NextUIProvider } from "@nextui-org/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <NextUIProvider>
-      <RouterProvider router={router} />
-    </NextUIProvider>
-  </React.StrictMode>
+  <NextUIProvider>
+    <RouterProvider router={router} />
+  </NextUIProvider>
 );
