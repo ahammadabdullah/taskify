@@ -39,6 +39,21 @@ async function run() {
       console.log(result);
       res.send(result);
     });
+    // change status
+    app.patch("/status", async (req, res) => {
+      const id = req.query.id;
+      console.log(id);
+      const data = req.body;
+      console.log(req.body);
+      const query = { _id: new ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          status: data.status,
+        },
+      };
+      const result = await taskCollection.updateOne(query, updatedDoc);
+      res.send(result);
+    });
     // app.post("/tasks", async (req, res) => {
     //   const data = req.body;
     //   const result = await taskCollection.insertMany(data);
