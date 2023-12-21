@@ -1,24 +1,11 @@
 import { useEffect, useState } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
-import Column from "./Column";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import TaskColumn from "./TaskColumn";
 import CreateTaskModal from "./Modals/CreateTaskModal";
 import useAuth from "../../Hooks/useAuth";
 
-const reorderColumnList = (sourceCol, startIndex, endIndex) => {
-  const newTaskIds = Array.from(sourceCol.taskIds);
-  const [removed] = newTaskIds.splice(startIndex, 1);
-  newTaskIds.splice(endIndex, 0, removed);
-
-  const newColumn = {
-    ...sourceCol,
-    taskIds: newTaskIds,
-  };
-
-  return newColumn;
-};
 const Home = () => {
   const [todo, setTodo] = useState([]);
   const [progress, setProgress] = useState([]);
@@ -54,6 +41,30 @@ const Home = () => {
     setIsOpen(true);
   }
 
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
+      return;
+    }
+
+    const updatedTasks = Array.from(data);
+    const [movedTask] = updatedTasks.splice(source.index, 1);
+    updatedTasks.splice(destination.index, 0, movedTask);
+
+    axiosSecure
+      .patch(`/status?id=${draggableId}`, {
+        status: destination.droppableId,
+      })
+      .then(() => {
+        refetch();
+      });
+  };
+
   return (
     <div className="flex flex-col min-h-screen w-[80%] mx-auto bg-orange-200 text-white pb-5">
       <div className="flex justify-center py-5 text-xl">
@@ -64,12 +75,41 @@ const Home = () => {
           Create Task
         </button>
       </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="flex justify-center gap-10 px-8 ">
+          <Droppable droppableId="todo">
+            {(provided) => (
+              <TaskColumn
+                provided={provided}
+                title={"Todo"}
+                task={todo}
+                refetch={refetch}
+              />
+            )}
+          </Droppable>
+          <Droppable droppableId="progress">
+            {(provided) => (
+              <TaskColumn
+                provided={provided}
+                title={"IN-PROGRESS"}
+                task={progress}
+                refetch={refetch}
+              />
+            )}
+          </Droppable>
+          <Droppable droppableId="completed">
+            {(provided) => (
+              <TaskColumn
+                provided={provided}
+                title={"Completed"}
+                task={completed}
+                refetch={refetch}
+              />
+            )}
+          </Droppable>
+        </div>
+      </DragDropContext>
 
-      <div className="flex justify-center gap-10 px-8 ">
-        <TaskColumn title={"Todo"} task={todo} refetch={refetch} />
-        <TaskColumn title={"IN-PROGRESS"} task={progress} refetch={refetch} />
-        <TaskColumn title={"Completed"} task={completed} refetch={refetch} />
-      </div>
       <CreateTaskModal
         isOpen={isOpen}
         closeModal={closeModal}

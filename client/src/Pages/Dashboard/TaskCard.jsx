@@ -6,7 +6,7 @@ import EditModal from "./Modals/EditModal";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const TaskCard = ({ item, refetch }) => {
+const TaskCard = ({ item, refetch, provided }) => {
   const axiosSecure = useAxiosSecure();
   const handleStatus = async (e) => {
     e.preventDefault();
@@ -32,7 +32,12 @@ const TaskCard = ({ item, refetch }) => {
     setIsOpen(true);
   }
   return (
-    <div className="mb-1  rounded-sm p-3 outline-2 outline-orange-500">
+    <div
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      className="mb-1  rounded-sm p-3 outline-2 outline-orange-500"
+    >
       <h3 className="text-bold">{item.title}</h3>
       <p className="text-sm">{item.description}</p>
       <div className="flex justify-between pt-2">
