@@ -30,13 +30,30 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const taskCollection = client.db("taskify").collection("alltasks");
-
-    app.post("/tasks", async (req, res) => {
-      const data = req.body;
-      const result = await taskCollection.insertMany(data);
+    //get all the task
+    app.get("/tasks", async (req, res) => {
+      const result = await taskCollection
+        .find()
+        .sort({ priority: 1 })
+        .toArray();
+      console.log(result);
       res.send(result);
     });
-
+    // app.post("/tasks", async (req, res) => {
+    //   const data = req.body;
+    //   const result = await taskCollection.insertMany(data);
+    //   res.send(result);
+    // });
+    // handle logout
+    app.post("/logout", async (req, res) => {
+      res
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
+        .send({ success: true });
+    });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
