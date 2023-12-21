@@ -1,6 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { FaRegClock } from "react-icons/fa";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import EditModal from "./Modals/EditModal";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const TaskCard = ({ item, refetch }) => {
   const axiosSecure = useAxiosSecure();
@@ -9,11 +13,24 @@ const TaskCard = ({ item, refetch }) => {
     const status = {
       status: e.target.value,
     };
-    console.log(status);
     const res = await axiosSecure.patch(`/status?id=${item._id}`, status);
-    console.log(res);
+    if (res.data.modifiedCount > 0) {
+      toast.success("Updated successfully");
+    }
     refetch();
   };
+  const handleDelete = async () => {
+    const res = await axiosSecure.delete(`/delete?id=${item._id}`);
+    console.log(res.data);
+    refetch();
+  };
+  let [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
+  function openModal() {
+    setIsOpen(true);
+  }
   return (
     <div className="mb-1  rounded-sm p-3 outline-2 outline-orange-500">
       <h3 className="text-bold">{item.title}</h3>
@@ -33,7 +50,14 @@ const TaskCard = ({ item, refetch }) => {
           {item.deadline}
         </span>
       </div>
-      <div className="flex justify-center pt-1 ">
+      <div className="flex justify-between pt-1 ">
+        <button
+          onClick={() => openModal()}
+          className="text-xl"
+          title="Delete Task"
+        >
+          <FaEdit />
+        </button>
         <select
           onChange={handleStatus}
           className="rounded-lg outline-orange-500"
@@ -46,7 +70,17 @@ const TaskCard = ({ item, refetch }) => {
           <option value="progress">progress</option>
           <option value="completed">Completed</option>
         </select>
+
+        <button onClick={handleDelete} className="text-xl" title="Delete Task">
+          <MdDelete />
+        </button>
       </div>
+      <EditModal
+        refetch={refetch}
+        item={item}
+        isOpen={isOpen}
+        closeModal={closeModal}
+      />
     </div>
   );
 };

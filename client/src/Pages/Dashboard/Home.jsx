@@ -4,6 +4,7 @@ import Column from "./Column";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import TaskColumn from "./TaskColumn";
+import CreateTaskModal from "./Modals/CreateTaskModal";
 
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   const newTaskIds = Array.from(sourceCol.taskIds);
@@ -44,7 +45,13 @@ const Home = () => {
       setCompleted([...filteredCompleted]);
     }
   }, [data]);
-
+  let [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
+  function openModal() {
+    setIsOpen(true);
+  }
   // const onDragEnd = (result) => {
   //   const { destination, source } = result;
   //   console.log(destination, "destination");
@@ -113,14 +120,16 @@ const Home = () => {
   return (
     // <DragDropContext onDragEnd={onDragEnd}>
     <div className="flex flex-col min-h-screen w-[80%] mx-auto bg-orange-200 text-white pb-5">
-      {/* <div className="flex flex-col py-8  justify-center">
-          <h3 className="text-3xl font-semibold">
-            React Beautiful Drag and Drop
-          </h3>
-          <p className="text-xl font-semibold">react-beautiful-dnd</p>
-        </div> */}
+      <div className="flex justify-center py-5 text-xl">
+        <button
+          className="px-3 py-2 bg-orange-400 rounded-md hover:bg-orange-100 hover:text-orange-500"
+          onClick={() => openModal()}
+        >
+          Create Task
+        </button>
+      </div>
 
-      <div className="flex justify-center gap-10 px-8 mt-10">
+      <div className="flex justify-center gap-10 px-8 ">
         <TaskColumn title={"Todo"} task={todo} refetch={refetch} />
         <TaskColumn title={"IN-PROGRESS"} task={progress} refetch={refetch} />
         <TaskColumn title={"Completed"} task={completed} refetch={refetch} />
@@ -131,6 +140,11 @@ const Home = () => {
             return <Column key={column.id} column={column} tasks={tasks} />;
           })} */}
       </div>
+      <CreateTaskModal
+        isOpen={isOpen}
+        closeModal={closeModal}
+        refetch={refetch}
+      />
     </div>
     // </DragDropContext>
   );
