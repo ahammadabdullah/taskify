@@ -1,7 +1,9 @@
+import Banner from "../Components/LandingPage/Banner";
+
 const LandingPage = () => {
   return (
-    <div>
-      <h3>Landing Page</h3>
+    <div className="max-w-7xl mx-auto">
+      <Banner />
     </div>
   );
 };

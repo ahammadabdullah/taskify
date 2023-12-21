@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   const newTaskIds = Array.from(sourceCol.taskIds);
@@ -16,10 +18,45 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 };
 const Home = () => {
   const [state, setState] = useState(initialData);
+  const axiosSecure = useAxiosSecure();
+  const { data, refetch } = useQuery({
+    queryKey: ["all-task"],
+    queryFn: async () => {
+      const res = await axiosSecure("/tasks");
+      return res.data;
+    },
+  });
+  console.log(data);
+
+  // const initialData = {
+  //   tasks: {
+  //     1: { id: 1, content: "Configure Next.js application" },
+  //   },
+  //   columns: {
+  //     "column-1": {
+  //       id: "column-1",
+  //       title: "TO-DO",
+  //       taskIds: [1, 2, 3, 4, 5, 6],
+  //     },
+  //     "column-2": {
+  //       id: "column-2",
+  //       title: "IN-PROGRESS",
+  //       taskIds: [],
+  //     },
+  //     "column-3": {
+  //       id: "column-3",
+  //       title: "COMPLETED",
+  //       taskIds: [],
+  //     },
+  //   },
+  //   // Facilitate reordering of the columns
+  //   columnOrder: ["column-1", "column-2", "column-3"],
+  // };
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
     console.log(destination, "destination");
+    console.log(source);
 
     // If user tries to drop in an unknown destination
     if (!destination) return;

@@ -11,11 +11,20 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import Logo from "./Logo/Logo";
+import useAuth from "../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        toast.success("Logged out successfully");
+      })
+      .catch((err) => toast.error(err));
+  };
   const menuItems = [
     "Profile",
     "Dashboard",
@@ -43,17 +52,42 @@ const NavBar = () => {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link to="/">Home</Link>
+          <Link
+            className={`hover:text-orange-500 ${
+              location.pathname === "/" && "text-orange-500"
+            }`}
+            to="/"
+          >
+            Home
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link
+            className={`hover:text-orange-500 ${
+              location.pathname === "/dashboard" && "text-orange-500"
+            }`}
+            to="/dashboard"
+          >
+            Dashboard
+          </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Log in
-          </Button>
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md"
+            >
+              Log Out
+            </button>
+          ) : (
+            <Link to={"/login"}>
+              <button className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md">
+                Log in
+              </button>
+            </Link>
+          )}
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>

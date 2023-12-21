@@ -17,7 +17,11 @@ const Column = ({ column, tasks }) => {
             {...droppableProvided.droppableProps}
           >
             {tasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={`${task.id}`} index={index}>
+              <Draggable
+                key={task.id}
+                draggableId={`${task.id}`}
+                index={index + 1}
+              >
                 {(draggableProvided, draggableSnapshot) => (
                   <div
                     className="mb-2 h-[72px] rounded-sm p-5 outline-2 outline-white"
