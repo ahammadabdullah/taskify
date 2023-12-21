@@ -5,6 +5,7 @@ import Home from "../Pages/Dashboard/Home";
 import HomeLayout from "../Layouts/HomeLayout";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import Profile from "../Pages/Dashboard/Profile";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Home />,
+      },
+      {
+        path: "/dashboard/profile",
+        element: <Profile />,
       },
     ],
   },

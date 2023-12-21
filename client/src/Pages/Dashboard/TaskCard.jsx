@@ -22,6 +22,9 @@ const TaskCard = ({ item, refetch, provided }) => {
   const handleDelete = async () => {
     const res = await axiosSecure.delete(`/delete?id=${item._id}`);
     console.log(res.data);
+    if (res.data.deletedCount > 0) {
+      toast.success("Updated successfully");
+    }
     refetch();
   };
   let [isOpen, setIsOpen] = useState(false);

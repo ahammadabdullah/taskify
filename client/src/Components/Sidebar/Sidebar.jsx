@@ -29,6 +29,14 @@ const Sidebar = () => {
         >
           dashboard
         </NavLink>
+        <NavLink
+          className={`py-2 text-center mt-2 w-[80%] rounded-lg hover:text-orange-500  bg-orange-200 ${
+            location.pathname === "/dashboard/profile" && "text-orange-500"
+          }`}
+          to={"/dashboard/profile"}
+        >
+          Profile
+        </NavLink>
       </div>
       <div className="flex flex-col  items-center pt-10 mb-10">
         <NavLink
