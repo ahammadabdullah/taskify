@@ -36,7 +36,6 @@ async function run() {
         .find()
         .sort({ priority: 1 })
         .toArray();
-      console.log(result);
       res.send(result);
     });
     // change status
@@ -63,6 +62,7 @@ async function run() {
     // get single data
     app.get("/task", async (req, res) => {
       const id = req.query.id;
+      console.log(id, "iddddddddddddddd");
       const filter = { _id: new ObjectId(id) };
       const result = taskCollection.findOne(filter);
       res.send(result);
@@ -85,7 +85,7 @@ async function run() {
       res.send(result);
     });
     // create task
-    app.post("/tasks", async (req, res) => {
+    app.post("/task", async (req, res) => {
       const data = req.body;
       const result = await taskCollection.insertOne(data);
       res.send(result);
