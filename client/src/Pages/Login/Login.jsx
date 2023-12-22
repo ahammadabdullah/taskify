@@ -27,7 +27,7 @@ const Login = () => {
     signInWithEmailPass(email, password)
       .then(() => {
         toast.success("Successfully logged in");
-        navigate(location?.state ? location.state : "/");
+        navigate(location?.state ? location.state : "/dashboard");
       })
       .catch((err) => {
         toast.error(err.message);
