@@ -26,14 +26,43 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
+// verify token
+const verifyToken = async (req, res, next) => {
+  const token = req.cookies?.token;
+  if (!token) {
+    return res.status(403).send({ message: " access forbidden" });
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "unauthorized access" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
 async function run() {
   try {
     const taskCollection = client.db("taskify").collection("alltasks");
+
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
+        .send({ success: true });
+    });
     //get all the task
-    app.get("/tasks", async (req, res) => {
+    app.get("/tasks", verifyToken, async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
       const result = await taskCollection
-        .find()
+        .find(query)
         .sort({ priority: 1 })
         .toArray();
       res.send(result);
@@ -55,14 +84,13 @@ async function run() {
     app.delete("/delete", async (req, res) => {
       const id = req.query.id;
       const filter = { _id: new ObjectId(id) };
-      const result = taskCollection.deleteOne(filter);
+      const result = await taskCollection.deleteOne(filter);
       res.send(result);
     });
 
     // get single data
     app.get("/task", async (req, res) => {
       const id = req.query.id;
-      console.log(id, "iddddddddddddddd");
       const filter = { _id: new ObjectId(id) };
       const result = taskCollection.findOne(filter);
       res.send(result);
