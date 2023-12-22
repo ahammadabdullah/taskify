@@ -104,7 +104,7 @@ const Login = () => {
             <div className="pb-8">
               <button
                 onClick={handleGoogleLogin}
-                className="w-full py-4   border-2  bg-orange-200 hover:border-orange-500 hover:text-orange-500 rounded-lg  hover:border-2 hover:font-semibold "
+                className="w-full py-4   border-2  bg-orange-200 text-orange-500 hover:border-orange-500 hover:text-orange-500 rounded-lg  hover:border-2 hover:font-semibold "
               >
                 {" "}
                 {loading ? (
