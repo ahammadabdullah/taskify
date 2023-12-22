@@ -66,7 +66,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-[80%] mx-auto bg-orange-200 text-white pb-5">
+    <div className="flex flex-col min-h-screen w-full mx-auto bg-orange-200 text-white pb-5">
       <div className="flex justify-center py-5 text-xl">
         <button
           className="px-3 py-2 bg-orange-400 rounded-md hover:bg-orange-100 hover:text-orange-500"
@@ -76,7 +76,7 @@ const Home = () => {
         </button>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex justify-center gap-10 px-8 ">
+        <div className="flex flex-wrap mx-auto justify-center gap-10 px-8 ">
           <Droppable droppableId="todo">
             {(provided) => (
               <TaskColumn

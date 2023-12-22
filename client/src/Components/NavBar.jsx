@@ -25,18 +25,7 @@ const NavBar = () => {
       })
       .catch((err) => toast.error(err));
   };
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  const menuItems = ["Dashboard", "Log Out"];
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -77,13 +66,13 @@ const NavBar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md"
+              className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md hover:bg-orange-500 hover:text-white"
             >
               Log Out
             </button>
           ) : (
             <Link to={"/login"}>
-              <button className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md">
+              <button className="py-[6px] px-3 bg-orange-200 text-orange-500 rounded-md hover:bg-orange-500 hover:text-white">
                 Log in
               </button>
             </Link>
@@ -91,24 +80,26 @@ const NavBar = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
-              {item}
-            </Link>
-          </NavbarMenuItem>
-        ))}
+        <NavbarItem>
+          <Link
+            className={`hover:text-orange-500 ${
+              location.pathname === "/" && "text-orange-500"
+            }`}
+            to="/"
+          >
+            Home
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link
+            className={`hover:text-orange-500 ${
+              location.pathname === "/dashboard" && "text-orange-500"
+            }`}
+            to="/dashboard"
+          >
+            Dashboard
+          </Link>
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   );

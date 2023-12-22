@@ -3,9 +3,11 @@ import Sidebar from "../Components/Sidebar/Sidebar";
 
 const DashboardLayout = () => {
   return (
-    <div className="flex max-h-screen overflow-y-hidden overflow-x-hidden">
+    <div className="relative lg:flex max-h-screen ">
       <Sidebar />
-      <Outlet />
+      <div className="flex-1 lg:ml-[320px]">
+        <Outlet />
+      </div>
     </div>
   );
 };

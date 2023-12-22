@@ -4,7 +4,7 @@ import profileBanner from "../../assets/profile_banner.jpg";
 const Profile = () => {
   const { user } = useAuth();
   return (
-    <div className="flex justify-center items-center h-screen w-full bg-orange-200">
+    <div className="flex justify-center items-center h-screen bg-orange-200 flex-1">
       <Helmet>
         <title>Dashboard | Profile</title>
       </Helmet>
