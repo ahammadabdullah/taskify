@@ -5,6 +5,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import TaskColumn from "./TaskColumn";
 import CreateTaskModal from "./Modals/CreateTaskModal";
 import useAuth from "../../Hooks/useAuth";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const [todo, setTodo] = useState([]);
@@ -67,6 +68,9 @@ const Home = () => {
 
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto bg-orange-200 text-white pb-5">
+      <Helmet>
+        <title>Dashboard | Taskify</title>
+      </Helmet>
       <div className="flex justify-center py-5 text-xl">
         <button
           className="px-3 py-2 bg-orange-400 rounded-md hover:bg-orange-100 hover:text-orange-500"

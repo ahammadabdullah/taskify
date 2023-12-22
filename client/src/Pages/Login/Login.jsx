@@ -36,7 +36,7 @@ const Login = () => {
   return (
     <div className="bg-base-300 min-h-screen ">
       <Helmet>
-        <title>Login | Edumi</title>
+        <title>Login | Taskify</title>
       </Helmet>
       <div className="max-w-7xl mx-auto py-20">
         <div
