@@ -31,9 +31,11 @@ const Sidebar = () => {
 
         <button
           onClick={handleToggle}
-          className=" p-4 focus:outline-none hover:text-orange-500 font-bold"
+          className={`${
+            !isActive ? "text-orange-500" : "text-Black"
+          } p-4 focus:outline-none hover:text-orange-500 font-bold`}
         >
-          <AiOutlineBars className="h-5 w-5" />
+          <AiOutlineBars className="h-5 w-5 md:h-7 md:w-7" />
         </button>
       </div>
       <div

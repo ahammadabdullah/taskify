@@ -25,7 +25,6 @@ const NavBar = () => {
       })
       .catch((err) => toast.error(err));
   };
-  const menuItems = ["Dashboard", "Log Out"];
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>

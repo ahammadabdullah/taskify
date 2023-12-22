@@ -27,6 +27,7 @@ const EditModal = ({ isOpen, closeModal, item, refetch }) => {
       description,
       priority,
       deadline,
+      email: user.email,
     };
     const res = await axiosSecure.put(`/update?id=${item._id}`, data);
     if (res.data.modifiedCount > 0) {

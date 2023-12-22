@@ -9,7 +9,11 @@ const port = process.env.PORT || 4000;
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [
+      "http://localhost:5173",
+      "https://taskify-ahammad-abdullah.web.app",
+      "https://taskify-ahammad-abdullah.firebaseapp.com/",
+    ],
     credentials: true,
   })
 );
@@ -68,7 +72,7 @@ async function run() {
       res.send(result);
     });
     // change status
-    app.patch("/status", async (req, res) => {
+    app.patch("/status", verifyToken, async (req, res) => {
       const id = req.query.id;
       const data = req.body;
       const query = { _id: new ObjectId(id) };
@@ -81,7 +85,7 @@ async function run() {
       res.send(result);
     });
     // delete task
-    app.delete("/delete", async (req, res) => {
+    app.delete("/delete", verifyToken, async (req, res) => {
       const id = req.query.id;
       const filter = { _id: new ObjectId(id) };
       const result = await taskCollection.deleteOne(filter);
@@ -89,14 +93,14 @@ async function run() {
     });
 
     // get single data
-    app.get("/task", async (req, res) => {
+    app.get("/task", verifyToken, async (req, res) => {
       const id = req.query.id;
       const filter = { _id: new ObjectId(id) };
       const result = taskCollection.findOne(filter);
       res.send(result);
     });
     // update task
-    app.put("/update", async (req, res) => {
+    app.put("/update", verifyToken, async (req, res) => {
       const id = req.query.id;
       const filter = { _id: new ObjectId(id) };
       const data = req.body;
@@ -113,7 +117,7 @@ async function run() {
       res.send(result);
     });
     // create task
-    app.post("/task", async (req, res) => {
+    app.post("/task", verifyToken, async (req, res) => {
       const data = req.body;
       const result = await taskCollection.insertOne(data);
       res.send(result);

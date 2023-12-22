@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://taskify-mocha-one.vercel.app",
   withCredentials: true,
 });
 
@@ -16,6 +16,7 @@ axiosSecure.interceptors.response.use(
     ) {
       await axiosSecure.post("/logout");
       window.location.replace("/login");
+      handleLogout();
     }
 
     return Promise.reject(error);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://taskify-mocha-one.vercel.app",
 });
 
 const useAxiosPublic = () => {
